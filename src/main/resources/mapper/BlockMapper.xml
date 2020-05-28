@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kangvai.demo.mapper.BlockMapper">
+  <resultMap id="BaseResultMap" type="com.kangvai.demo.model.BlockDto">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="txhash" jdbcType="VARCHAR" property="txhash" />
+    <result column="sender" jdbcType="VARCHAR" property="sender" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="author_id" jdbcType="INTEGER" property="authorId" />
+    <result column="author_name" jdbcType="VARCHAR" property="authorName" />
+    <result column="work_title" jdbcType="VARCHAR" property="workTitle" />
+    <result column="work_hash" jdbcType="VARCHAR" property="workHash" />
+    <result column="isdeleted" jdbcType="TINYINT" property="isdeleted" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+        id, txhash, sender, create_time, author_id, author_name, work_title, work_hash, isdeleted
+  </sql>
+
+  <select id="findBlocksList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from block
+    where isdeleted=0
+    order by id desc
+    <if test="start!=null and limit!=null">
+      limit #{start},#{limit}
+    </if>
+  </select>
+
+  <select id="getTotalBlocks" resultType="int">
+    select count(*) from block
+    where isdeleted=0
+    <if test="blockId!=null">
+      AND id = #{blockId}
+    </if>
+  </select>
+
+  <select id="findOthersBlocksList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from block
+    where isdeleted=0
+    <if test="authorId != null">
+        AND author_id != #{authorId}
+    </if>
+    order by id desc
+    <if test="pageUtil.start!=null and pageUtil.limit!=null">
+      limit #{pageUtil.start},#{pageUtil.limit}
+    </if>
+  </select>
+
+  <select id="getOthersTotalBlocks" resultType="int">
+    select count(*) from block
+    where isdeleted=0
+    <if test="authorId != null">
+      AND author_id != #{authorId}
+    </if>
+  </select>
+
+  <insert id="insertBlock">
+        insert into block
+        (txhash,sender,create_time,author_id,author_name,work_title,work_hash)
+        values
+        (#{txHash,jdbcType=VARCHAR},#{sender,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP},#{authorId,jdbcType=INTEGER},
+        #{authorName,jdbcType=VARCHAR},#{workTitle,jdbcType=VARCHAR},
+        #{workHash,jdbcType=VARCHAR})
+    </insert>
+</mapper>

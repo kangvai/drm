@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kangvai.demo.mapper.RecordMapper">
+  <resultMap id="BaseResultMap" type="com.kangvai.demo.model.RecordDto">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="author_id" jdbcType="INTEGER" property="authorId" />
+    <result column="author_name" jdbcType="VARCHAR" property="authorName" />
+    <result column="work_title" jdbcType="VARCHAR" property="workTitle" />
+    <result column="check_time" jdbcType="TIMESTAMP" property="checkTime" />
+    <result column="result_status" jdbcType="TINYINT" property="resultStatus" />
+    <result column="feedback" jdbcType="VARCHAR" property="feedback" />
+    <result column="isdeleted" jdbcType="TINYINT" property="isdeleted" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+        id, author_id, author_name, work_title, check_time, result_status, feedback, isdeleted
+    </sql>
+
+  <select id="findRecordsListByAuthorID" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from record
+    where isdeleted=0
+    <if test="authorId!=null">
+      AND author_id = #{authorId}
+    </if>
+    order by id desc
+    <if test="map.start!=null and map.limit!=null">
+      limit #{map.start},#{map.limit}
+    </if>
+  </select>
+
+  <select id="getTotalRecordsByAuthorID" resultType="int">
+    select count(*) from record
+    where isdeleted=0
+    <if test="authorId!=null">
+      AND author_id = #{authorId}
+    </if>
+  </select>
+
+  <insert id="insertRecord">
+        insert into record
+        (author_id,author_name,work_title,check_time,result_status,feedback)
+        values
+        (#{authorId,jdbcType=INTEGER},#{userName,jdbcType=VARCHAR},
+        #{workTitle,jdbcType=VARCHAR},#{checkTime,jdbcType=TIMESTAMP},
+        #{resultStatus,jdbcType=TINYINT},#{feedback,jdbcType=VARCHAR})
+    </insert>
+
+</mapper>

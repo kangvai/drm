@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kangvai.demo.mapper.TradeMapper">
+  <resultMap id="BaseResultMap" type="com.kangvai.demo.model.TradeDto">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="author_id" jdbcType="INTEGER" property="authorId" />
+    <result column="author_name" jdbcType="VARCHAR" property="authorName" />
+    <result column="work_title" jdbcType="VARCHAR" property="workTitle" />
+    <result column="reader_id" jdbcType="INTEGER" property="readerId" />
+    <result column="reader_name" jdbcType="VARCHAR" property="readerName" />
+    <result column="buy_time" jdbcType="TIMESTAMP" property="buyTime" />
+    <result column="tx_hash" jdbcType="VARCHAR" property="txHash" />
+    <result column="work_hash" jdbcType="VARCHAR" property="workHash" />
+    <result column="isdeleted" jdbcType="TINYINT" property="isdeleted" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+        id, author_id, author_name, work_title, reader_id, reader_name, buy_time, tx_hash, work_hash
+  </sql>
+
+  <select id="findTradesListByReaderId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from trade
+    where isdeleted=0
+    <if test="readerId != null">
+      AND reader_id = #{readerId}
+    </if>
+    order by id desc
+    <if test="pageUtil.start!=null and pageUtil.limit!=null">
+      limit #{pageUtil.start},#{pageUtil.limit}
+    </if>
+  </select>
+
+  <select id="getTotalTradesByReaderId" resultType="int">
+    select count(*) from trade
+    where isdeleted=0
+    <if test="readerId != null">
+      AND reader_id = #{readerId}
+    </if>
+  </select>
+</mapper>

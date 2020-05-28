@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<header th:replace="user/header::header-fragment"></header>
+<body class="hold-transition sidebar-mini">
+<style>
+    .ui-jqgrid tr.jqgrow td {
+        white-space: normal !important;
+        height: auto;
+        vertical-align: text-top;
+        padding-top: 2px;
+    }
+</style>
+<div class="wrapper">
+    <!-- 引入页面头header-fragment -->
+    <div th:replace="user/header::header-nav"></div>
+    <!-- 引入工具栏sidebar-fragment -->
+    <div th:replace="user/sidebar::sidebar-fragment(${path})"></div>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- Main content -->
+        <div class="content">
+            <div class="container-fluid">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">作品交易</h3>
+                    </div> <!-- /.card-body -->
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-4">
+                                    <input type="text" placeholder="作者/作品名" id="keyword" class="form-control">&nbsp;
+                                </div>
+                                <div class="col-1">
+                                    <button class="btn btn-info" onclick="search()">
+                                        <i class="fa fa-folder-open" id="search"></i>&nbsp;搜索
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- JqGrid必要DOM,用于创建表格展示列表数据 -->
+                        <table id="jqGrid" class="table table-bordered"></table>
+                        <!-- JqGrid必要DOM,分页信息区域 -->
+                        <div id="jqGridPager"></div>
+                    </div><!-- /.card-body -->
+                </div>
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+        <div class="content">
+            <!-- 模态框（Modal） -->
+            <div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="buyModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h6 class="modal-title" id="buyModalLabel">购买信息</h6>
+                        </div>
+                        <div class="modal-body">
+                            <form id="buyForm">
+                                <input type="hidden" class="form-control" id="categoryId" name="categoryId">
+                                <div class="form-group">
+                                    <label class="control-label">作品信息:</label>
+                                    <div>
+                                        作品标题：<input type="text" class="form-control" id="workTitle"
+                                               name="workTitle" required="true">
+                                    </div>
+                                    <div>
+                                        <input type="text" class="form-control" id="authorId"
+                                               name="authorId" required="true" hidden="true">
+
+                                        作者：<input type="text" class="form-control" id="authorName"
+                                                  name="authorName" required="true" >
+                                    </div>
+                                    <label class="control-label">买家信息:</label>
+                                    <div>
+                                        <input type="text" class="form-control" id="uid"
+                                               name="uid" required="true" hidden="true" th:value="${uid}">
+
+                                        买家姓名：<input type="text" class="form-control" id="username"
+                                                    name="username" required="true" th:value="${username}">
+                                    </div>
+                                    <div>
+                                        买家账号：<input type="text" class="form-control" id="publicKey"
+                                                    name="publicKey" required="true" th:value="${publicKey}">
+                                    </div>
+                                    <div>
+                                        请输入支付密码：<input type="password" class="form-control" id="buyerpwd"
+                                                       name="buyerpwd" required="true">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" id="saveButton">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal -->
+        </div>
+    </div>
+    <!-- /.content-wrapper -->
+    <!-- 引入页脚footer-fragment -->
+    <div th:replace="user/footer::footer-fragment"></div>
+</div>
+<!-- jQuery -->
+<script th:src="@{/user/plugins/jquery/jquery.min.js}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script th:src="@{/user/plugins/jQueryUI/jquery-ui.min.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/user/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/user/dist/js/adminlte.min.js}"></script>
+<!-- jquery App -->
+<script th:src="@{/user/plugins/jqgrid-5.3.0/jquery.jqGrid.min.js}"></script>
+<script th:src="@{/user/plugins/jqgrid-5.3.0/grid.locale-cn.js}"></script>
+<!-- sweetalert -->
+<script th:src="@{/user/plugins/sweetalert/sweetalert.min.js}"></script>
+<script th:src="@{/user/dist/js/public.js}"></script>
+<script th:src="@{/user/dist/js/trade.js}"></script>
+</body>
+</html>
