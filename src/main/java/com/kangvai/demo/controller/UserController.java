@@ -28,13 +28,10 @@ public class UserController {
     @Resource
     private UserService userService;
 
-    @GetMapping({"/","user/index"})
-    public String index() {
-        return "user/index";
+    @GetMapping({"/","user/login"})
+    public String login() {
+        return "user/login";
     }
-
-    @GetMapping({"user/login"})
-    public String login() {return "user/login"; }
 
     @GetMapping({"user/register"})
     public String register() {return "user/register"; }
